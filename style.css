@@ -1,0 +1,62 @@
+body {
+  background-color: #1e1e1e !important;
+  font-family: 'Segoe UI', sans-serif !important;
+  color: #f0f0f0 !important;
+  margin: 0;
+  padding: 0;
+}
+
+input[type="text"],
+input[type="password"] {
+  background-color: #2e2e2e !important;
+  color: #ffffff !important;
+  border: 1px solid #0097A9 !important;
+  padding: 10px;
+  border-radius: 4px;
+  width: 100% !important;
+  box-sizing: border-box;
+}
+
+#Login_LoginButton,
+#Login_bteCreateAccount {
+  background-color: #0097A9 !important;
+  color: white !important;
+  border: none !important;
+  padding: 10px 16px !important;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 10px 5px;
+}
+
+#Login_LoginButton:hover,
+#Login_bteCreateAccount:hover {
+  background-color: #007c8a !important;
+}
+
+label {
+  color: #dddddd !important;
+  font-size: 14px !important;
+  display: block;
+  margin-bottom: 6px;
+}
+
+#Login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+#Login td {
+  padding: 10px;
+}
+
+p, table, td {
+  background: transparent !important;
+  color: #f0f0f0 !important;
+}
+
+table[border="0"] {
+  margin: auto;
+}

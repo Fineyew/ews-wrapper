@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "EWS Login Dark Theme",
+  "version": "1.1",
+  "description": "Custom dark theme and layout improvements for EWS login page",
+  "content_scripts": [
+    {
+      "matches": ["https://ews.mip.com/ews/*"],
+      "js": ["content.js"],
+      "css": ["style.css"]
+    }
+  ],
+  "permissions": ["scripting"],
+  "icons": {
+    "48": "icon48.png",
+    "128": "icon128.png"
+  }
+}
