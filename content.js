@@ -1,24 +1,125 @@
-window.addEventListener('load', () => {
-  const userInput = document.getElementById("Login_UserName");
-  if (userInput) {
-    userInput.focus();
+const layoutStyleId = 'ews-wrapper-style';
+const darkStyleId = 'ews-wrapper-dark-style';
+
+function addStylesheet(id, css) {
+  let style = document.getElementById(id);
+  if (!style) {
+    style = document.createElement('style');
+    style.id = id;
+    style.textContent = css;
+    document.head.appendChild(style);
+  } else {
+    style.textContent = css;
+  }
+}
+
+function removeStylesheet(id) {
+  const style = document.getElementById(id);
+  if (style) style.remove();
+}
+
+function applyAllStyles(enabled, darkMode) {
+  if (!enabled) {
+    removeStylesheet(layoutStyleId);
+    removeStylesheet(darkStyleId);
+    return;
   }
 
-  const star1 = document.getElementById("Login_UserNameRequired");
-  const star2 = document.getElementById("Login_PasswordRequired");
-  if (star1) star1.style.visibility = "hidden";
-  if (star2) star2.style.visibility = "hidden";
+  addStylesheet(layoutStyleId, mainStyles);
+  if (darkMode) {
+    addStylesheet(darkStyleId, darkStyles);
+  } else {
+    removeStylesheet(darkStyleId);
+  }
+}
 
-  const overlay = document.createElement("div");
-  overlay.innerText = "🌓 Dark Theme Active";
-  overlay.style.position = "fixed";
-  overlay.style.top = "10px";
-  overlay.style.right = "10px";
-  overlay.style.padding = "8px 12px";
-  overlay.style.background = "#0097A9";
-  overlay.style.color = "#fff";
-  overlay.style.fontSize = "12px";
-  overlay.style.borderRadius = "5px";
-  overlay.style.zIndex = 9999;
-  document.body.appendChild(overlay);
+chrome.storage.local.get(['enabled', 'darkMode'], (res) => {
+  applyAllStyles(res.enabled ?? true, res.darkMode ?? false);
 });
+
+chrome.storage.onChanged.addListener((changes) => {
+  chrome.storage.local.get(['enabled', 'darkMode'], (res) => {
+    applyAllStyles(res.enabled ?? true, res.darkMode ?? false);
+  });
+});
+
+const mainStyles = `
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+  html, body {
+    min-height: 100vh !important;
+    height: 100% !important;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #00c3ff, #742dd2) !important;
+    font-family: 'Orbitron', sans-serif !important;
+  }
+
+  /* Remove original logo image (top left) */
+  img[src*="CompanyLogo"],
+  td[style*="Images/form-header-left"],
+  td[style*="Images/form-header-back"],
+  td[style*="Images/form-header-right"],
+  td[style*="Images/form-footer"] {
+    display: none !important;
+  }
+
+  /* Fix white bar at bottom */
+  body > table:last-of-type {
+    display: none !important;
+  }
+
+  /* Clean up the top nav */
+  table[width="100%"] td a {
+    background-color: #008ab8 !important;
+    color: #fff !important;
+    padding: 8px 16px;
+    border-radius: 12px;
+    margin-right: 6px;
+    font-size: 13px;
+    text-decoration: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: all 0.2s ease-in-out;
+  }
+
+  table[width="100%"] td a:hover {
+    background-color: #00709e !important;
+  }
+
+  /* Add centered banner title replacing old EWS header */
+  table[width="100%"] td[colspan="6"]::before {
+    content: "Employee Web Services for MIP";
+    display: block;
+    text-align: center;
+    background-color: #00aacc;
+    color: white;
+    font-size: 18px;
+    padding: 12px 24px;
+    border-radius: 18px;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    margin: 16px auto;
+    width: fit-content;
+    font-family: 'Orbitron', sans-serif !important;
+  }
+`;
+
+const darkStyles = `
+  body {
+    background: linear-gradient(135deg, #111, #333) !important;
+  }
+
+  table[width="100%"] td a {
+    background-color: #00ffff !important;
+    color: #111 !important;
+  }
+
+  table[width="100%"] td a:hover {
+    background-color: #009999 !important;
+  }
+
+  table[width="100%"] td[colspan="6"]::before {
+    background-color: #00ffff !important;
+    color: #111 !important;
+  }
+`;

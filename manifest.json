@@ -1,18 +1,31 @@
 {
   "manifest_version": 3,
-  "name": "EWS Login Dark Theme",
+  "name": "EWS Wrapper",
   "version": "1.1",
-  "description": "Custom dark theme and layout improvements for EWS login page",
+  "description": "Custom styling and features for EWS",
+  "permissions": ["storage", "scripting", "activeTab"],
+  "host_permissions": ["https://ews.mip.com/ews/*"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
   "content_scripts": [
     {
       "matches": ["https://ews.mip.com/ews/*"],
       "js": ["content.js"],
-      "css": ["style.css"]
+      "run_at": "document_idle"
     }
   ],
-  "permissions": ["scripting"],
   "icons": {
-    "48": "icon48.png",
-    "128": "icon128.png"
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
   }
 }
